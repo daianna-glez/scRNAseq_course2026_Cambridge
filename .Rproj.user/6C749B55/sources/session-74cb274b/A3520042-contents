@@ -1,0 +1,99 @@
+
+## Run CellRanger
+
+# ______________________________________________________________________________
+#                         1.  Index the reference genome
+# ______________________________________________________________________________
+## Current directory
+pwd
+
+## Files/subdirs in current directory
+ls
+
+## Files in a specific subdirectory
+ls Data/
+
+## FASTA human reference for chr 21 and corresponding tx anno GFT file from Ensembl
+ls Data/references
+
+# ______________________________________________________________________________
+## Explore FASTA file
+less Data/references/Homo_sapiens.GRCh38.dna.chromosome.21.fa
+
+# We find the header containing the name of the chr
+# Followed by letters containing the nucleotides.
+# At the start of human chr21 we don't know the sequence and have Ns
+# If you scroll down you'll eventually get nts
+
+# >chr21 21
+# NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+# NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+# NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+
+## Exit less pressing "q" for "quit"
+
+
+## Explore GTF file containing tx anno
+less Data/references/gencode.v41.primary_assembly.annotation.chr21.gtf
+
+# - Metadata commented with hashes
+# - Then each line for a gene/tx, giving its position in that chr and feature data (ids, version, type)
+
+##description: evidence-based annotation of the human genome (GRCh38), version 41 (Ensembl 107)
+##provider: GENCODE
+##contact: gencode-help@ebi.ac.uk
+##format: gtf
+##date: 2022-05-12
+
+# chr21   HAVANA  gene    5086740 5087232 .       +       .       gene_id "ENSG00000289905"; gene_version "1"; gene_type "lncRNA"; gene_name "ENSG00000289905"; level 2;
+# chr21   HAVANA  transcript      5086740 5087232 .       +       .       gene_id "ENSG00000289905"; gene_version "1"; transcript_id "ENST00000701545"; transcript_version "1"; gene_type "lncRNA"; gene_name "ENSG00000289905"; transcript_type "lncRNA"; transcript_name "ENST00000701545"; level 2; tag "basic"; tag "Ensembl_canonical"; tag "TAGENE";
+
+# ______________________________________________________________________________
+## Prepare Refernce for chr21 from FASTA and GFT
+
+# 1. Create a shell script named "01_prepare_reference.sh"
+
+touch 01_prepare_reference.sh    ## Creates empty file
+ls
+less 01_prepare_reference.sh
+q
+
+
+## Add text (commands) to .sh file
+nano 01_prepare_reference.sh
+
+# #!/bin/bash          👉 “Run this script using the Bash shell;
+#                         this is a script in Bash language, interpret the text based on it.”
+#
+# # change to directory where the FASTA and GTF files are
+# cd Data/references/
+#
+# # run mkref
+# cellranger mkref\                 👉 Use slash at the end of command to tell the
+#                                      operating system this is part of the same line
+#   --fasta "YOUR CODE HERE" \
+#   --genes "YOUR CODE HERE" \
+#   --genome "YOUR CODE HERE" \
+#   --nthreads "YOUR CODE HERE"   👉 Tells how many CPUs to use for indexing to paralelize
+#                                    the work (depends on the number of CPUs in your machine)
+
+## Run script
+bash 01_prepare_reference.sh
+
+
+## Outputs in Data/references/GRCh38_chr21_index
+ls Data/references/GRCh38_chr21_index/
+
+## Look at files and their size
+ls -lh Data/references/GRCh38_chr21_index/fasta
+
+
+
+# ______________________________________________________________________________
+#                    2.  Read alignment and counting
+# ______________________________________________________________________________
+
+ls Data/fastq/
+## Dont read gz files! these are binary
+
+nano 02_cellranger_count.sh

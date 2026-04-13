@@ -1,0 +1,26 @@
+{
+    "id": "A0B946C5",
+    "path": "~/Documents/Courses/scRNAseq_course2026_Cambridge/01_prepare_reference.sh",
+    "project_path": "01_prepare_reference.sh",
+    "type": "sh",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1775389463107.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "7,16",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1775390416,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1775390416,
+    "read_only": false,
+    "read_only_alternatives": []
+}

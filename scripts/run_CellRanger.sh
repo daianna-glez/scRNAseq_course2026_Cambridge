@@ -30,6 +30,10 @@ less Data/references/Homo_sapiens.GRCh38.dna.chromosome.21.fa
 # NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 # NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
+
+## To look at nts
+tail -n1000 Data/references/Homo_sapiens.GRCh38.dna.chromosome.21.fa
+
 ## Exit less pressing "q" for "quit"
 
 
@@ -49,7 +53,7 @@ less Data/references/gencode.v41.primary_assembly.annotation.chr21.gtf
 # chr21   HAVANA  transcript      5086740 5087232 .       +       .       gene_id "ENSG00000289905"; gene_version "1"; transcript_id "ENST00000701545"; transcript_version "1"; gene_type "lncRNA"; gene_name "ENSG00000289905"; transcript_type "lncRNA"; transcript_name "ENST00000701545"; level 2; tag "basic"; tag "Ensembl_canonical"; tag "TAGENE";
 
 # ______________________________________________________________________________
-## Prepare Refernce for chr21 from FASTA and GFT
+## Prepare Reference for chr21 from FASTA and GFT
 
 # 1. Create a shell script named "01_prepare_reference.sh"
 
@@ -62,8 +66,8 @@ q
 ## Add text (commands) to .sh file
 nano 01_prepare_reference.sh
 
-# #!/bin/bash          👉 “Run this script using the Bash shell;
-#                         this is a script in Bash language, interpret the text based on it.”
+# #!/bin/bash          👉 “Run this is a
+#                          script in Bash language, interpret the text based on it.”
 #
 # # change to directory where the FASTA and GTF files are
 # cd Data/references/
@@ -93,7 +97,25 @@ ls -lh Data/references/GRCh38_chr21_index/fasta
 #                    2.  Read alignment and counting
 # ______________________________________________________________________________
 
+## Check index folder out from reference indexing
+ls -lh Data/references/GRCh38_chr21_index/fasta
+
+## We'll need fastq files to align their reads
 ls Data/fastq/
 ## Dont read gz files! these are binary
+
+## To see them
+gunzip Data/fastq/SRR9264343_S1_L001_I1_001.fastq.gz
+gunzip Data/fastq/SRR9264343_S1_L001_R1_001.fastq.gz
+gunzip Data/fastq/SRR9264343_S1_L001_R2_001.fastq.gz
+
+## Same number of lines each file (4 * number of reads)
+wc -l Data/fastq/SRR9264343_S1_L001_I1_001.fastq
+wc -l Data/fastq/SRR9264343_S1_L001_R1_001.fastq
+wc -l Data/fastq/SRR9264343_S1_L001_R2_001.fastq
+
+head Data/fastq/SRR9264343_S1_L001_I1_001.fastq
+head Data/fastq/SRR9264343_S1_L001_R1_001.fastq
+head Data/fastq/SRR9264343_S1_L001_R1_001.fastq
 
 nano 02_cellranger_count.sh

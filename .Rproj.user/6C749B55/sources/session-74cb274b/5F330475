@@ -1,0 +1,26 @@
+{
+    "id": "5F330475",
+    "path": "~/Documents/Courses/scRNAseq_course2026_Cambridge/02_cellranger_count.sh",
+    "project_path": "02_cellranger_count.sh",
+    "type": "sh",
+    "hash": "4139830377",
+    "contents": "",
+    "dirty": false,
+    "created": 1776255008515.0,
+    "source_on_save": false,
+    "relative_order": 9,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "3,24",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1776278786,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1776278786249,
+    "read_only": false,
+    "read_only_alternatives": []
+}

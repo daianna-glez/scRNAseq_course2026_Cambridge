@@ -78,8 +78,12 @@ dim(seurat_object[["SCT"]]$data)
 dim(seurat_object[["SCT"]]$scale.data)
 # [1] 5240 5500
 
+#          ETV6RUNX1-1_AAAGATGCAAGCTGAG-1 ETV6RUNX1-1_AAAGATGTCTCCCTGA-1 ETV6RUNX1-1_AAAGCAAAGTCCAGGA-1
+# ISG15                       -0.91209382                    -1.02828121                    -0.93550114
+# C1orf159                    -0.26514307                    -0.29561394                    -0.28397910
+# TNFRSF18                    -0.03729065                    -0.04935809                    -0.04444046
 
-## Run PCA on selected HVGs (uses scaled.data)
+## Run PCA on selected HVGs
 seurat_object <- RunPCA(seurat_object,
                         features = VariableFeatures(object = seurat_object))
 
@@ -92,15 +96,13 @@ seurat_object
 # 1 other assay present: RNA
 # 1 dimensional reduction calculated: pca
 
-Embeddings(seurat_object, "pca")[1:5, 1:3]
-#                                     PC_1       PC_2       PC_3
-# ETV6RUNX1-1_AAAGATGCAAGCTGAG-1 -6.769144  -7.946609 -0.6317091
-# ETV6RUNX1-1_AAAGATGTCTCCCTGA-1 -6.905391 -18.494652 -0.9786730
-# ETV6RUNX1-1_AAAGCAAAGTCCAGGA-1 -8.376045  -3.641986 -2.0509314
-# ETV6RUNX1-1_AAAGCAATCTGCTGCT-1  1.348829  -2.527630 -0.1079209
-# ETV6RUNX1-1_AAATGCCAGAACAATC-1 -2.398241   2.431743 -1.6583093
+seurat_object[["pca"]][1:3, 1:3]
+#             PC_1        PC_2         PC_3
+# H4C3 -0.05631689 -0.11827558 -0.024848112
+# HBB  -0.21316526  0.06973494 -0.001183002
+# HBA2 -0.21265752  0.06499896  0.003043886
 
-dim(Embeddings(seurat_object, "pca"))
+dim(seurat_object[["pca"]])
 # [1] 5500   50
 
 ## Project data on low dimensional space based on PC1-15
@@ -126,15 +128,14 @@ seurat_object[["umap"]]
 # Jackstraw run: FALSE
 # Computed using assay: SCT
 
-Embeddings(seurat_object, "umap")[1:5, ]
+seurat_object[["umap"]][[1:3,]]
+seurat_object[["umap"]]@cell.embeddings[1:3, ]
 #                                  umap_1   umap_2
 # ETV6RUNX1-1_AAAGATGCAAGCTGAG-1 8.568957 2.183402
 # ETV6RUNX1-1_AAAGATGTCTCCCTGA-1 8.207743 1.305192
 # ETV6RUNX1-1_AAAGCAAAGTCCAGGA-1 9.101487 2.851795
-# ETV6RUNX1-1_AAAGCAATCTGCTGCT-1 9.318301 3.912487
-# ETV6RUNX1-1_AAATGCCAGAACAATC-1 7.785025 5.043800
 
-dim(Embeddings(seurat_object, "umap"))
+dim(seurat_object[["umap"]])
 # [1] 5500    2
 
 
@@ -144,7 +145,6 @@ uncorrected_plot <- DimPlot(seurat_object,
                             group.by = "SampleName") +
     ggtitle("Uncorrected data")
 
-uncorrected_plot
 
 ## ------------------   Clustering  ------------------
 # Run clustering using PCs to see how cells group in the uncorrected data:
@@ -164,11 +164,7 @@ seurat_object@graphs
 seurat_object <- FindClusters(seurat_object,
                               cluster.name = "uncorrected_clusters")
 
-table(seurat_object$uncorrected_clusters)
-# 0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19
-# 670 535 443 437 396 357 349 300 295 286 239 204 201 180 179 103  96  91  79  60
-
-## Plot UMAP coloring by cluster
+## Plot cluster lables on UMAP
 uncorrected_clusters_plot <- DimPlot(seurat_object,
                                      reduction = "umap",
                                      group.by ="uncorrected_clusters") +
@@ -214,26 +210,6 @@ harmony_object
 # 1 other assay present: RNA
 # 3 dimensional reductions calculated: pca, umap, harmony
 
-## Used 50 PCs
-harmony_object@reductions[["harmony"]]
-# A dimensional reduction object with key harmony_
-# Number of dimensions: 50
-# Number of cells: 5500
-# Projected dimensional reduction calculated:  FALSE
-# Jackstraw run: FALSE
-# Computed using assay: SCT
-
-## All cells corrected in same 50 dimensions
-dim(harmony_object@reductions[["harmony"]])
-# [1] 5500   50
-
-Embeddings(harmony_object, "harmony")[1:5, ]
-#                                 harmony_1  harmony_2  harmony_3
-# ETV6RUNX1-1_AAAGATGCAAGCTGAG-1  -8.284318 -10.040992 -2.1903206
-# ETV6RUNX1-1_AAAGATGTCTCCCTGA-1  -7.351029 -21.098846 -2.4322651
-# ETV6RUNX1-1_AAAGCAAAGTCCAGGA-1 -10.796967  -4.799736 -3.3002390
-# ETV6RUNX1-1_AAAGCAATCTGCTGCT-1  -1.271489  -2.727243 -0.7515063
-# ETV6RUNX1-1_AAATGCCAGAACAATC-1  -2.337928   1.981280 -2.2652033
 
 ## Visualize clusters in UMAP using integrated data (not original PCA embedding)
 harmony_object <- RunUMAP(harmony_object,
@@ -245,11 +221,6 @@ harmony_object <- FindNeighbors(harmony_object, reduction = "harmony",
                                 dims = 1:15)
 harmony_object <- FindClusters(harmony_object,
                                cluster.name = "harmony_clusters")
-
-table(harmony_object$harmony_clusters)
-#   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
-# 745 724 465 458 435 431 371 334 331 253 205 199 198 161 154  36
-
 # make the plots
 harmony_plot <- DimPlot(harmony_object,
                         reduction = "umap",
@@ -327,57 +298,8 @@ seurat_object_sample <- SCTransform(
 seurat_object_sample <- RunPCA(seurat_object_sample,
                                features = VariableFeatures(object = seurat_object_sample))
 
-seurat_object_sample <- RunUMAP(seurat_object_sample,
-                                reduction = "pca",
-                                dims = 1:15)
-
-uncorrected_plot_sample <- DimPlot(seurat_object_sample,
-                                   reduction = "umap",
-                                   group.by = "SampleName") +
-    ggtitle("Uncorrected data - Sample")
-
-seurat_object_sample <- FindNeighbors(seurat_object_sample,
-                                      reduction = "pca",
-                                      dims = 1:15)
-
-seurat_object_sample <- FindClusters(seurat_object_sample,
-                                     cluster.name = "uncorrected_clusters")
-
-uncorrected_clusters_sample_plot <- DimPlot(seurat_object, reduction = "umap",
-                                            group.by ="uncorrected_clusters") +
-    ggtitle("Uncorrected data clusters - Sample")
-
-uncorrected_clusters_sample_plot
-
-# Run Harmony integration
-harmony_object_sample <- IntegrateLayers(object = seurat_object_sample,
-                                         method = HarmonyIntegration,
-                                         orig.reduction = "pca",
-                                         new.reduction = "harmony_sample")
-
-harmony_object_sample <- RunUMAP(harmony_object_sample,
-                                 reduction = "harmony_sample",
-                                 dims = 1:15)
-
-harmony_object_sample_plot <- DimPlot(harmony_object_sample,
-                                      reduction = "umap",
-                                      group.by = "SampleName") +
-    ggtitle("Harmony integrated data - Sample")
-
-uncorrected_plot_sample + harmony_object_sample_plot
-
-armony_object_sample <- FindNeighbors(harmony_object_sample,
-                                      reduction = "harmony_sample",
-                                      dims = 1:15)
-harmony_object_sample <- FindClusters(harmony_object_sample,
-                                      cluster.name = "harmony_sample_clusters")
-
-harmony_object_sample_clusters_plot <- DimPlot(harmony_object_sample, reduction = "umap",
-                                               group.by ="harmony_sample_clusters") + ggtitle("Harmony integrated data clusters - Sample")
 
 
-
-uncorrected_clusters_sample_plot + harmony_object_sample_clusters_plot
 
 
 

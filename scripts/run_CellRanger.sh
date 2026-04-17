@@ -10,6 +10,18 @@ pwd
 ## Files/subdirs in current directory
 ls
 
+ls - lh
+# total 8            <-    total disk space used by the listed files
+
+# Permissions   num files    user      group   size  last modified date  file name
+
+# drwxr-xr-x@          14 daianna      staff   448B          5 Apr 16:11 CellRanger_Outputs
+# drwxr-xr-x@           8 daianna      staff   256B         15 Apr 23:17 fastq
+# drwxr-xr-x@           6 daianna      staff   192B         15 Apr 19:00 references
+# -rw-r--r--@           1 daianna      staff   341B          5 Apr 02:42 sample_sheet.tsv
+# drwxr-xr-x@           4 daianna      staff   128B          5 Apr 02:43 SRR9264343sub
+
+
 ## Files in a specific subdirectory
 ls Data/
 
@@ -30,11 +42,10 @@ less Data/references/Homo_sapiens.GRCh38.dna.chromosome.21.fa
 # NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 # NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
+## Exit less pressing "q" for "quit"
 
 ## To look at nts
 tail -n1000 Data/references/Homo_sapiens.GRCh38.dna.chromosome.21.fa
-
-## Exit less pressing "q" for "quit"
 
 
 ## Explore GTF file containing tx anno
@@ -51,6 +62,23 @@ less Data/references/gencode.v41.primary_assembly.annotation.chr21.gtf
 
 # chr21   HAVANA  gene    5086740 5087232 .       +       .       gene_id "ENSG00000289905"; gene_version "1"; gene_type "lncRNA"; gene_name "ENSG00000289905"; level 2;
 # chr21   HAVANA  transcript      5086740 5087232 .       +       .       gene_id "ENSG00000289905"; gene_version "1"; transcript_id "ENST00000701545"; transcript_version "1"; gene_type "lncRNA"; gene_name "ENSG00000289905"; transcript_type "lncRNA"; transcript_name "ENST00000701545"; level 2; tag "basic"; tag "Ensembl_canonical"; tag "TAGENE";
+
+## Look first line
+head -1
+head -n1
+
+
+## Print one specific line by number
+# sed is an editor used to process text line by line
+# sed prints every line by default
+# -n tells it: “only print what I explicitly ask for”
+
+sed -n '6p' Data/references/gencode.v41.primary_assembly.annotation.chr21.gtf
+sed -n '7p' Data/references/gencode.v41.primary_assembly.annotation.chr21.gtf
+
+## Number of annotated features
+wc -l Data/references/gencode.v41.primary_assembly.annotation.chr21.gtf
+
 
 # ______________________________________________________________________________
 ## Prepare Reference for chr21 from FASTA and GFT

@@ -12,7 +12,9 @@ ls
 
 ls - lh
 # total 8            <-    total disk space used by the listed files
+
 # Permissions   num files    user      group   size  last modified date  file name
+
 # drwxr-xr-x@          14 daianna      staff   448B          5 Apr 16:11 CellRanger_Outputs
 # drwxr-xr-x@           8 daianna      staff   256B         15 Apr 23:17 fastq
 # drwxr-xr-x@           6 daianna      staff   192B         15 Apr 19:00 references

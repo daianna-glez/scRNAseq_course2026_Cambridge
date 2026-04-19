@@ -145,7 +145,7 @@ seurat_object <- RunUMAP(seurat_object,
 # confirm a new reduction was added to the object
 Reductions(seurat_object)
 ## [1] "pca"                    "tsne"                   "TSNE_perplex30"
-## "TSNE_perplex30_seed321" "TSNE_perplex5"          "TSNE_perplex500"        "umap"
+##      "TSNE_perplex30_seed321" "TSNE_perplex5"          "TSNE_perplex500"        "umap"
 
 # visualise the UMAP
 DimPlot(seurat_object,

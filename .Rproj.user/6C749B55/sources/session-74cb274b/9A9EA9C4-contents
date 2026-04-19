@@ -1,9 +1,0 @@
-#!/bin/bash 
-
-cd Data/references/
-
-cellranger mkref\ 
- --fasta  
- --genes 
- --genome 
- --nthreads  

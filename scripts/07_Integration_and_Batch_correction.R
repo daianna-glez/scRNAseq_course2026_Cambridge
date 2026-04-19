@@ -240,7 +240,13 @@ harmony_object <- RunUMAP(harmony_object,
                           reduction = "harmony",
                           dims = 1:15)
 
-# Run clustering
+## Make UMAP plot
+harmony_plot <- DimPlot(harmony_object,
+                        reduction = "umap",
+                        group.by = "SampleName") +
+                            ggtitle("Harmony integrated data")
+
+# Run clustering to find clusters
 harmony_object <- FindNeighbors(harmony_object, reduction = "harmony",
                                 dims = 1:15)
 harmony_object <- FindClusters(harmony_object,
@@ -250,11 +256,7 @@ table(harmony_object$harmony_clusters)
 #   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
 # 745 724 465 458 435 431 371 334 331 253 205 199 198 161 154  36
 
-# make the plots
-harmony_plot <- DimPlot(harmony_object,
-                        reduction = "umap",
-                        group.by = "SampleName") +
-    ggtitle("Harmony integrated data")
+# make the plot
 harmony_clusters_plot <- DimPlot(harmony_object,
                                  reduction = "umap",
                                  group.by ="harmony_clusters") +
